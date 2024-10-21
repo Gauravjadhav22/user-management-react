@@ -7,13 +7,19 @@ import useAuth from "../hooks/useAuth";
 const DashboardPage = () => {
   const [user, setUser] = useState(null);
 
+  const fetchCurrentUser = async () => {
+    try {
+      const response = await axiosInstance.get("/users/get-me");
+      setUser(response.data?.data);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+    }
+  };
+  
   useEffect(() => {
-    // Fetch current user data from API
-    axiosInstance
-      .get("/users/get-me")
-      .then((response) => setUser(response.data?.data))
-      .catch((error) => console.error("Error fetching user:", error));
+    fetchCurrentUser();
   }, []);
+  
 
   if (!user) return <p>Loading...</p>;
 
@@ -22,7 +28,7 @@ const DashboardPage = () => {
       {user.role === "ADMIN" ? (
         <AdminDashboard />
       ) : (
-        <UserDashboard user={user} />
+        <UserDashboard user={user} updateUser={fetchCurrentUser}/>
       )}
   
     </div>

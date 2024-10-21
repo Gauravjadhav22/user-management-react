@@ -5,7 +5,7 @@ import axios from "axios";
 import axiosInstance from "../../config/axiosInstance";
 import toast from "react-hot-toast";
 
-const UserDashboard = ({ user }) => {
+const UserDashboard = ({ user,updateUser=()=>{} }) => {
   const [isDisabled, setIsDisabled] = useState(user.isDisabled);
   const [showMoreOptions, setShowMoreOptions] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
@@ -24,6 +24,7 @@ const UserDashboard = ({ user }) => {
         disable: !isDisabled,
       });
       toast.success("updated successfully");
+      updateUser()
     } catch (error) {
       toast.error(error?.response?.data?.message || "Something went wrong!..");
 
@@ -52,6 +53,7 @@ const UserDashboard = ({ user }) => {
       await axiosInstance.put(`/users/${user.id}`, updatedUser);
       setShowEditForm(false);
       toast.success("updated successfully");
+      updateUser()
     } catch (error) {
       toast.error(error?.response?.data?.message || "Something went wrong!..");
 
@@ -60,49 +62,50 @@ const UserDashboard = ({ user }) => {
   };
 
   return (
-    <div className="relative">
-      {showEditForm && (
-        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-8 rounded-lg shadow-lg w-1/3">
-            <h2 className="text-2xl font-semibold mb-4">Edit User</h2>
-            <form onSubmit={handleEditSubmit}>
-              <label className="block mb-2">First Name:</label>
-              <input
-                className="border p-2 mb-4 w-full"
-                type="text"
-                value={updatedUser.firstName}
-                onChange={(e) =>
-                  setUpdatedUser({ ...updatedUser, firstName: e.target.value })
-                }
-              />
-              <label className="block mb-2">Last Name:</label>
-              <input
-                className="border p-2 mb-4 w-full"
-                type="text"
-                value={updatedUser.lastName}
-                onChange={(e) =>
-                  setUpdatedUser({ ...updatedUser, lastName: e.target.value })
-                }
-              />
-              <label className="block mb-2">Email:</label>
-              <input
-                className="border p-2 mb-4 w-full"
-                type="email"
-                value={updatedUser.email}
-                onChange={(e) =>
-                  setUpdatedUser({ ...updatedUser, email: e.target.value })
-                }
-              />
-              <button
-                type="submit"
-                className="bg-blue-500 text-white py-2 px-4 rounded-lg"
-              >
-                Save Changes
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
+    <div className="relative w-full">
+    {showEditForm && (
+  <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md mx-4 sm:w-1/2 lg:w-1/3">
+      <h2 className="text-2xl font-semibold mb-4">Edit User</h2>
+      <form onSubmit={handleEditSubmit}>
+        <label className="block mb-2">First Name:</label>
+        <input
+          className="border p-2 mb-4 w-full"
+          type="text"
+          value={updatedUser.firstName}
+          onChange={(e) =>
+            setUpdatedUser({ ...updatedUser, firstName: e.target.value })
+          }
+        />
+        <label className="block mb-2">Last Name:</label>
+        <input
+          className="border p-2 mb-4 w-full"
+          type="text"
+          value={updatedUser.lastName}
+          onChange={(e) =>
+            setUpdatedUser({ ...updatedUser, lastName: e.target.value })
+          }
+        />
+        <label className="block mb-2">Email:</label>
+        <input
+          className="border p-2 mb-4 w-full"
+          type="email"
+          value={updatedUser.email}
+          onChange={(e) =>
+            setUpdatedUser({ ...updatedUser, email: e.target.value })
+          }
+        />
+        <button
+          type="submit"
+          className="bg-blue-500 text-white py-2 px-4 rounded-lg"
+        >
+          Save Changes
+        </button>
+      </form>
+    </div>
+  </div>
+)}
+
 
       <div className="flex items-center justify-center min-h-screen bg-gray-100">
         <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">

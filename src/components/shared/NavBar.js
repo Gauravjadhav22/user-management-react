@@ -13,7 +13,7 @@ console.log(user,isAuthenticated);
           {isAuthenticated ? (
             <>
               <span className="text-white mr-4">Welcome, {user?.firstName}</span>
-              <button onClick={logout} className="text-white mr-4">Logout</button>
+              <button onClick={logout} className="text-red-500 mr-4 ml-4 font-semibold border-red-200 shadow p-1 bg-red-50 rounded-md">Logout</button>
             </>
           ) : (
             <>
